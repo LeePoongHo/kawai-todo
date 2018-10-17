@@ -1,19 +1,45 @@
 import React from 'react';
 import { StyleSheet, Text, View, StatusBar, TextInput, Dimensions, Platform } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import ToDo from "./ToDo";
 
 const { height, width } = Dimensions.get("window");
 
 export default class App extends React.Component {
+
+  state = {
+    newToDo: ""
+  }
+
   render() {
+    const { newToDo } = this.state;
     return (
       <View style={styles.container}>
         <StatusBar barStyle="light-content" />
         <Text style={styles.title}>Kawai to do</Text>
         <View style={styles.card}>
-          <TextInput style={styles.input} placeholder={"New To Do"} />
+          <TextInput 
+            style={styles.input} 
+            placeholder={"New To Do"} 
+            underlineColorAndroid="transparent" 
+            value={newToDo} 
+            onChangeText={this._controlNewToDO}
+            placeholderTextColor={"#999"}
+            returnKeyType={"done"}
+            autoCorrect={false}
+          />
+          <ScrollView contentContainerStyle={ styles.toDos }>
+            <ToDo />
+          </ScrollView>
         </View>
       </View>
     );
+  }
+
+  _controlNewToDO = text => {
+    this.setState({
+      newToDo: text
+    });
   }
 }
 
@@ -50,5 +76,14 @@ const styles = StyleSheet.create({
         elevation: 3
       }
     })
+  },
+  input: {
+    padding: 20,
+    borderBottomColor:"#bbb",
+    borderBottomWidth: 1,
+    fontSize: 25
+  },
+  toDos: {
+    alignItems: "center"
   }
 });
